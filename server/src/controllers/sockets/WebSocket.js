@@ -15,7 +15,8 @@ class WebSocket{
   }
 
   anotherSubscribes (socket) {
-
+    //абстрактний метод
+    //повинен бути обов'язково в дочірніх класах
   }
 
   onSubscribe (socket) {

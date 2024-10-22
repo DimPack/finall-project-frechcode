@@ -11,9 +11,7 @@
   },
   "rules": {
     "comma-dangle": [
-      "error",
-      "always-multiline"
-    ],
+      "warm"    ],
     "comma-spacing": [
       "error",
       {
