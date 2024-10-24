@@ -1,6 +1,11 @@
 module.exports = {
-  JWT_SECRET: "asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4", //cамі придумуєм
-  ACCESS_TOKEN_TIME: 60 * 60,
+  ACCESS_JWT_SECRET: "asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4", //cамі придумуєм
+  ACCESS_TOKEN_TIME: '2m',
+
+  REFRESH_JWT_SECRET: "asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4", //cамі придумуєм
+  REFRESH_TOKEN_TIME: '7d',
+  MAX_DEVISE: 3,
+
   SALT_ROUNDS: 5,
   SQUADHELP_BANK_NUMBER: "4564654564564564",
   SQUADHELP_BANK_NAME: "SquadHelp",
