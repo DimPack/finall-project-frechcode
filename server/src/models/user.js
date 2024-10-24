@@ -15,12 +15,12 @@ const hashPassword = async (user, options) => {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.hasMany(models.Offer, { foreignKey: "userId", targetKey: "id" });
-      User.hasMany(models.Contest, { foreignKey: "userId", targetKey: "id" });
-      User.hasMany(models.Rating, { foreignKey: "userId", targetKey: "id" });
+      User.hasMany(models.Offer, { foreignKey: "userId", sourceKey: "id" });
+      User.hasMany(models.Contest, { foreignKey: "userId", sourceKey: "id" });
+      User.hasMany(models.Rating, { foreignKey: "userId", sourceKey: "id" });
       User.hasMany(models.RefreshToken, {
         foreignKey: "userId",
-        targetKey: "id",
+        sourceKey: "id",
       });
     }
     async comparePassword(password) {
