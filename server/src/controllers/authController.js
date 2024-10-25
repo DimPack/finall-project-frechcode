@@ -1,7 +1,8 @@
 const { createToken } = require("../services");
 const { User, RefreshToken } = require("../models");
 const { MAX_DEVISE } = require("../constants");
-const { BadRequestError, LogInError, TokenError } = require("../errors");
+const BadRequestError = require('../errors/BadRequestError');
+const TokenError = require('../errors/TokenError');
 module.exports.singnUp = async (req, res, next) => {
   try {
     const { body } = req;

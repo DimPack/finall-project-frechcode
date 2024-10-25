@@ -8,7 +8,7 @@ const {
   REFRESH_TOKEN_TIME,
 } = require("../constants");
 
-const signJWTPromise = promisify(jwt.sign());
+const signJWTPromise = promisify(jwt.sign);
 const verifyJWTPromise = promisify(jwt.verify);
 /**
  * 

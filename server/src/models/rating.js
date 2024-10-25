@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         targetKey: "id",
       });
-      Rating.belongsTo(models.Offers, {
+      Rating.belongsTo(models.Offer, {
         foreignKey: "offerId",
         targetKey: "id",
       });
