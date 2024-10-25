@@ -1,0 +1,2 @@
+GET http://localhost:3000/getUser HTTP/1.1
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjEsImVtYWlsIjoiY3VzdG9tZXIxQGdtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTcyOTg0Nzg5MiwiZXhwIjoxNzI5ODQ4MDEyfQ.noRkBV6XjvvGPSIrISKMTa9GmVEVJaTJ6d4EVEquRu0 "
