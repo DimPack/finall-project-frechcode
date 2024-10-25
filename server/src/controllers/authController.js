@@ -1,4 +1,4 @@
-const { createToken } = require("../services");
+const { createPairTokens } = require("../services");
 const { User, RefreshToken } = require("../models");
 const { MAX_DEVISE } = require("../constants");
 const BadRequestError = require('../errors/BadRequestError');
@@ -8,10 +8,10 @@ module.exports.singnUp = async (req, res, next) => {
     const { body } = req;
     const user = await User.create(body);
     if (user) {
-      const pairTokens = await createToken(user);
+      const pairTokens = await createPairTokens(user);
       await user.createRefreshToken({ token: pairTokens.refresh });
       user.password = undefined;
-      return res.status(200).send({ data: { user, pairTokens } });
+      return res.status(201).send({ data: { user, pairTokens } });
     }
     next(new BadRequestError()); //error
   } catch (error) {
@@ -26,10 +26,10 @@ module.exports.singnIn = async (req, res, next) => {
     } = req;
     const user = await User.findOne({ where: { email } });
     if (user && (await user.comparePassword(password))) {
-      const pairTokens = await createToken(user);
-      if ((await user.countRefreshTokens) >= MAX_DEVISE) {
+      const pairTokens = await createPairTokens(user);
+      if ((await user.countRefreshTokens()) >= MAX_DEVISE) {
         const [oldestToken] = await user.getRefreshTokens({
-          order: [["updateAt", "ASC"]],
+          order: [["updatedAt", "ASC"]],
         });
         await oldestToken.update({ token: pairTokens.refresh });
       } else {
