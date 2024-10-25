@@ -2,39 +2,26 @@ const jwt = require('jsonwebtoken');
 const CONSTANTS = require('../constants');
 const TokenError = require('../errors/TokenError');
 const userQueries =require('../controllers/queries/userQueries');
+const LogInError = require('../errors/LogInError');
 
 module.exports.checkAuth = async (req, res, next) => {
-  const accessToken = req.headers.authorization;
-  if (!accessToken) {
-    return next(new TokenError('need token'));
-  }
+
   try {
-    const tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
+    const {
+      headers: { authorization },
+    } = req;
+    if (!authorization) {
+      return next(new LogInError('need log'));
+    }
+
+    const [, accessToken] = authorization.split(" ");
+    const tokenData = await verifyAccessToken(accessToken);
     const foundUser = await userQueries.findUser({ id: tokenData.userId });
-    res.send({
-      firstName: foundUser.firstName,
-      lastName: foundUser.lastName,
-      role: foundUser.role,
-      id: foundUser.id,
-      avatar: foundUser.avatar,
-      displayName: foundUser.displayName,
-      balance: foundUser.balance,
-      email: foundUser.email,
-    });
+    foundUser.password = undefined;
+    return res.status(200).send({data: foundUser});
   } catch (err) {
     next(new TokenError());
   }
 };
 
-module.exports.checkToken = async (req, res, next) => {
-  const accessToken = req.headers.authorization;
-  if (!accessToken) {
-    return next(new TokenError('need token'));
-  }
-  try {
-    req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
-    next();
-  } catch (err) {
-    next(new TokenError());
-  }
-};
+

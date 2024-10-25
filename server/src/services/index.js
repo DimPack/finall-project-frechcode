@@ -18,7 +18,6 @@ const verifyJWTPromise = promisify(jwt.verify);
 
  * @returns {Promise}
  */
-
 const createToken = (payload, { secretKey, timeExp }) => {
   return signJWTPromise(
     {
@@ -33,13 +32,12 @@ const createToken = (payload, { secretKey, timeExp }) => {
     }
   );
 };
-
 /**
  *
  * @param {object} payload
  * @returns {Promise}
  */
-const createPairTokens = async (payload) => ({
+module.exports.createPairTokens = async (payload) => ({
   access: await createToken(payload, {
     secretKey: ACCESS_JWT_SECRET,
     timeExp: ACCESS_TOKEN_TIME,
@@ -49,3 +47,11 @@ const createPairTokens = async (payload) => ({
     timeExp: REFRESH_TOKEN_TIME,
   }),
 });
+
+const verifyToken = (token, options) =>
+  verifyJWTPromise(token, options.secret, options);
+
+module.exports.verifyAccessToken = (token, options={}) =>
+  verifyToken(token, { secret: ACCESS_TOKEN_SECRET, ...options });
+module.exports.verifyRefreshToken = (token, options={}) =>
+  verifyToken(token, { secret: REFRESH_TOKEN_SECRET, ...options });
