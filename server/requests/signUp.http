@@ -1,11 +1,11 @@
-POST http://localhost:3000/auth/sing-up HTTP/1.1
+POST http://localhost:3000/auth/sign-up HTTP/1.1
 Content-Type: application/json
 
 {
-    "firstName":"creator",
-    "lastName":"creator",
-    "displayName":"creator",
-    "password":"creator@gmail.com",
-    "email":"creator@gmail.com",
-    "role":"creator"
+  "firstName":"customer",
+  "lastName":"customer",
+  "displayName":"customer",
+  "password":"customer@gmail.com",
+  "email":"customer@gmail.com",
+  "role":"customer"
 }

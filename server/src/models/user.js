@@ -1,30 +1,26 @@
-"use strict";
-const { Model } = require("sequelize");
-const bcrypt = require("bcrypt");
-const { ROLES, SALT_ROUNDS } = require("../constants");
+'use strict';
+const { Model } = require('sequelize');
+const bcrypt = require('bcrypt');
+const { ROLES, SALT_ROUNDS } = require('../constants');
 
 const hashPassword = async (user, options) => {
-  if (user.changed("password")) {
-    //changed в секвалайзі
-    const { password } = user;
+  if(user.changed('password')){
+    const {password} = user;
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     user.password = passwordHash;
   }
-};
+}
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.hasMany(models.Offer, { foreignKey: "userId", sourceKey: "id" });
-      User.hasMany(models.Contest, { foreignKey: "userId", sourceKey: "id" });
-      User.hasMany(models.Rating, { foreignKey: "userId", sourceKey: "id" });
-      User.hasMany(models.RefreshToken, {
-        foreignKey: "userId",
-        sourceKey: "id",
-      });
+      User.hasMany(models.Offer, { foreignKey: 'userId', sourceKey: 'id' });
+      User.hasMany(models.Contest, { foreignKey: 'userId', sourceKey: 'id' });
+      User.hasMany(models.Rating, { foreignKey: 'userId', sourceKey: 'id' });
+      User.hasMany(models.RefreshToken, {foreignKey: 'userId',sourceKey: 'id'});
     }
-    async comparePassword(password) {
-      return bcrypt.compare(password, this.getDataValue("password"));
+    async comparePassword(password){
+      return bcrypt.compare(password, this.getDataValue('password'))
     }
   }
   User.init(
@@ -42,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       password: {
-        field: "passwordHash",
+        field: 'passwordHash',
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -74,10 +70,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "User",
+      modelName: 'User',
       timestamps: true,
     }
   );
+
   User.beforeCreate(hashPassword);
   User.beforeUpdate(hashPassword);
 

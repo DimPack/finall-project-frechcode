@@ -38,7 +38,7 @@ module.exports.dataForContest = async (req, res, next) => {
 
 module.exports.getContestById = async (req, res, next) => {
   try {
-    let contestInfo = await db.Contest.findOne({
+    let contestInfo = await db.Contests.findOne({
       where: { id: req.headers.contestid },
       order: [
         [db.Offer, 'id', 'asc'],

@@ -1,4 +1,3 @@
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Selects', {
@@ -16,14 +15,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: new Date(),
-
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: new Date(),
-
-      }
+      },
     });
   },
   down: (queryInterface, Sequelize) => {

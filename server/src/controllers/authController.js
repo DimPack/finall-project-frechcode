@@ -1,9 +1,10 @@
-const { createPairTokens } = require("../services");
-const { User, RefreshToken } = require("../models");
-const { MAX_DEVISE } = require("../constants");
+const { createPairTokens } = require('../services');
+const { User, RefreshToken } = require('../models');
+const { MAX_DEVICES } = require('../constants');
 const BadRequestError = require('../errors/BadRequestError');
 const TokenError = require('../errors/TokenError');
-module.exports.singnUp = async (req, res, next) => {
+
+module.exports.signUp = async (req, res, next) => {
   try {
     const { body } = req;
     const user = await User.create(body);
@@ -18,8 +19,7 @@ module.exports.singnUp = async (req, res, next) => {
     next(error);
   }
 };
-
-module.exports.singnIn = async (req, res, next) => {
+module.exports.signIn = async (req, res, next) => {
   try {
     const {
       body: { email, password },
@@ -27,9 +27,9 @@ module.exports.singnIn = async (req, res, next) => {
     const user = await User.findOne({ where: { email } });
     if (user && (await user.comparePassword(password))) {
       const pairTokens = await createPairTokens(user);
-      if ((await user.countRefreshTokens()) >= MAX_DEVISE) {
+      if ((await user.countRefreshTokens()) >= MAX_DEVICES) {
         const [oldestToken] = await user.getRefreshTokens({
-          order: [["updatedAt", "ASC"]],
+          order: [['updatedAt', 'ASC']],
         });
         await oldestToken.update({ token: pairTokens.refresh });
       } else {
@@ -43,7 +43,6 @@ module.exports.singnIn = async (req, res, next) => {
     next(error);
   }
 };
-
 module.exports.refresh = async (req, res, next) => {
   try {
     const {
@@ -52,15 +51,14 @@ module.exports.refresh = async (req, res, next) => {
     const instanceRefreshToken = await RefreshToken.findOne({
       where: { token: refreshToken },
     });
-    if (!instanceRefreshToken) {
+    if(!instanceRefreshToken){
       return next(new TokenError());
     }
     const user = await instanceRefreshToken.getUser();
-
     const pairTokens = await createPairTokens(user);
     await instanceRefreshToken.update({ token: pairTokens.refresh });
     user.password = undefined;
-    return res.status(200).send({ data: { user, pairTokens } });
+    res.status(200).send({ data: { user, pairTokens } });
   } catch (error) {
     next(error);
   }
